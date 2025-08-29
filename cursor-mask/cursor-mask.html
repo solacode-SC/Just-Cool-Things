@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Solacode Cursor Playground</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: radial-gradient(circle at top left, #141727, #0a0c16);
+      color: #e8eaf6;
+      overflow-x: hidden;
+    }
+
+    header, footer {
+      text-align: center;
+      padding: 16px;
+      background: rgba(255,255,255,.04);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,.1);
+    }
+    footer {
+      border-top: 1px solid rgba(255,255,255,.1);
+      margin-top: auto;
+      font-size: 14px;
+    }
+    header strong {
+      font-size: 20px;
+      color: #5b76ff;
+      text-shadow: 0 0 10px #5b76ff;
+    }
+    footer a {
+      color: #5b76ff;
+      text-decoration: none;
+      margin: 0 8px;
+      font-weight: 600;
+      transition: color .2s;
+    }
+    footer a:hover { color: #8aa0ff; }
+
+    .wrap {
+      flex: 1;
+      width: min(960px, 95vw);
+      display: grid;
+      gap: 28px;
+      place-self: center;
+      padding: 40px 0;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+    h1 { font-size: 26px; margin: 0; }
+
+    .glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.4;
+      animation: float 12s infinite ease-in-out alternate;
+      z-index: 0;
+    }
+    .glow1 { width: 300px; height: 300px; background: #5b76ff; top: 10%; left: -10%; }
+    .glow2 { width: 250px; height: 250px; background: #ff5bdc; bottom: 10%; right: -10%; animation-delay: 3s; }
+    @keyframes float {
+      from { transform: translateY(0px); }
+      to   { transform: translateY(60px); }
+    }
+
+    .palette {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+      gap: 20px;
+    }
+    .icon {
+      width: 80px; height: 80px;
+      padding: 14px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.15);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      user-select: none;
+      transition: transform .25s ease, box-shadow .25s ease;
+      box-shadow: 0 0 10px rgba(0,0,0,.4);
+    }
+    .icon:hover {
+      transform: translateY(-8px) scale(1.08) rotate(-2deg);
+      box-shadow: 0 12px 24px rgba(0,0,0,.6), 0 0 20px rgba(91,118,255,.4);
+    }
+    .icon img { width: 100%; height: 100%; object-fit: contain; }
+
+    .row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      opacity: .9;
+    }
+    .hint { font-size: 13px; opacity: .7; }
+    button {
+      background: linear-gradient(135deg, #5b76ff, #8f9dff);
+      border: 0;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 14px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: transform .2s, box-shadow .2s;
+    }
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(91,118,255,.5);
+    }
+
+    body.cursor-active { cursor: none; }
+    #custom-cursor {
+      position: fixed;
+      left: 0; top: 0;
+      width: 40px; height: 40px;
+      transform: translate(-50%, -50%);
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      pointer-events: none;
+      z-index: 999999;
+      display: none;
+      animation: pulse 1.5s infinite ease-in-out;
+    }
+    @keyframes pulse {
+      0%,100% { filter: drop-shadow(0 0 6px rgba(91,118,255,.6)); }
+      50%     { filter: drop-shadow(0 0 14px rgba(91,118,255,.9)); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <strong>Made by Solacode</strong>
+  </header>
+
+  <div class="glow glow1"></div>
+  <div class="glow glow2"></div>
+
+  <div class="wrap">
+    <h1>Choose your cursor ✨</h1>
+    <div class="palette">
+      <div class="icon"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" alt="React" /></div>
+      <div class="icon"><img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg" alt="Python" /></div>
+      <div class="icon"><img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Git_icon.svg" alt="Git" /></div>
+      <div class="icon"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" alt="JS" /></div>
+      <div class="icon"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d9/Node.js_logo.svg" alt="Node" /></div>
+      <div class="icon"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg" alt="Tailwind" /></div>
+    </div>
+
+    <div class="row">
+      <span class="hint">Use <kbd>-</kbd> to zoom out (x3), <kbd>+</kbd> to zoom in (normal), <kbd>Esc</kbd> to reset.</span>
+      <button id="reset">Reset cursor</button>
+    </div>
+  </div>
+
+  <footer>
+    <span>Follow me: </span>
+    <a href="https://github.com/solacode-SC" target="_blank">GitHub</a> |
+    <a href="https://x.com/solacode-SC" target="_blank">X (Twitter)</a>
+  </footer>
+
+  <div id="custom-cursor" aria-hidden="true"></div>
+
+  <script>
+    const icons = document.querySelectorAll('.icon img');
+    const cursorEl = document.getElementById('custom-cursor');
+    const resetBtn = document.getElementById('reset');
+    let customActive = false;
+    let normalSize = 40;
+    let currentSize = normalSize;
+    let isZoomedOut = false;
+
+    document.addEventListener('mousemove', (e) => {
+      if (!customActive) return;
+      cursorEl.style.left = e.clientX + 'px';
+      cursorEl.style.top  = e.clientY + 'px';
+    });
+
+    icons.forEach(img => {
+      img.addEventListener('click', () => setCustomCursor(img.src));
+    });
+
+    function setCustomCursor(url, size = normalSize) {
+      cursorEl.style.backgroundImage = `url("${url}")`;
+      cursorEl.style.width  = size + 'px';
+      cursorEl.style.height = size + 'px';
+      cursorEl.style.display = 'block';
+      document.body.classList.add('cursor-active');
+      customActive = true;
+      currentSize = size;
+    }
+
+    function resizeCursor(multiplier) {
+      if (!customActive) return;
+      currentSize = normalSize * multiplier;
+      cursorEl.style.width  = currentSize + 'px';
+      cursorEl.style.height = currentSize + 'px';
+    }
+
+    function resetCursor() {
+      customActive = false;
+      cursorEl.style.display = 'none';
+      cursorEl.style.backgroundImage = '';
+      document.body.classList.remove('cursor-active');
+      currentSize = normalSize;
+      isZoomedOut = false;
+    }
+
+    resetBtn.addEventListener('click', resetCursor);
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        resetCursor();
+      } else if (e.key === '-') {
+        if (!isZoomedOut) {
+          resizeCursor(3); // zoom out x3
+          isZoomedOut = true;
+        }
+      } else if (e.key === '+' || e.key === '=') {
+        if (isZoomedOut) {
+          resizeCursor(1); // back to normal
+          isZoomedOut = false;
+        }
+      }
+    });
+  </script>
+</body>
+</html>
